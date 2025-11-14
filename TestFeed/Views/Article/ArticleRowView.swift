@@ -21,56 +21,9 @@ struct ArticleRowView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack(spacing: 8) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.backgroundLight)
-                        .frame(width: 94, height: 86)
-
-                    Image(systemName: "newspaper.fill")
-                        .font(.system(size: 28, weight: .semibold))
-                        .foregroundColor(Color.primaryBlue)
-                        .padding(16)
-                }
-                    
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(article.webTitle)
-                        .font(.system(size: 17, weight: .bold))
-                        .foregroundColor(Color.primaryDark)
-                        .lineLimit(2)
-                        .multilineTextAlignment(.leading)
-                    
-                    Text("\(article.sectionName) • \(article.formattedDate)")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(Color.secondaryBlue)
-                    
-                    Spacer(minLength: 0)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                
-                VStack {
-                    Menu {
-                        if tab != .blocked {
-                            Button(action: { onFavorite?() }) {
-                                Label(isFavorite ?
-                                      "Remove from Favorites" : "Add to Favorites",
-                                      systemImage: isFavorite ? "heart.slash" : "heart")
-                            }
-                        }
-                        Button(role: .destructive) {
-                            showBlockAlert = true
-                        } label: {
-                            Label(isBlocked ? "Unblock" : "Block",
-                                  systemImage: isBlocked ? "lock.open.fill" : "nosign")
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis.circle")
-                            .font(.system(size: 20, weight: .light))
-                            .foregroundStyle(Color.secondaryBlue)
-                    }
-                    .menuStyle(BorderlessButtonMenuStyle())
-                    
-                    Spacer(minLength: 0)
-                }
+                articleImage
+                articleInfo
+                articleButton
             }
             .padding()
         }
@@ -99,5 +52,62 @@ struct ArticleRowView: View {
                 )
             }
         )
+    }
+    
+    var articleImage: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 4)
+                .fill(Color.backgroundLight)
+                .frame(width: 94, height: 86)
+
+            Image(systemName: "newspaper.fill")
+                .font(.system(size: 28, weight: .semibold))
+                .foregroundColor(Color.primaryBlue)
+                .padding(16)
+        }
+    }
+    
+    var articleInfo: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(article.webTitle)
+                .font(.system(size: 17, weight: .bold))
+                .foregroundColor(Color.primaryDark)
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+            
+            Text("\(article.sectionName) • \(article.formattedDate)")
+                .font(.system(size: 15, weight: .medium))
+                .foregroundColor(Color.secondaryBlue)
+            
+            Spacer(minLength: 0)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    var articleButton: some View {
+        VStack {
+            Menu {
+                if tab != .blocked {
+                    Button(action: { onFavorite?() }) {
+                        Label(isFavorite ?
+                              "Remove from Favorites" : "Add to Favorites",
+                              systemImage: isFavorite ? "heart.slash" : "heart")
+                    }
+                }
+                Button(role: .destructive) {
+                    showBlockAlert = true
+                } label: {
+                    Label(isBlocked ? "Unblock" : "Block",
+                          systemImage: isBlocked ? "lock.open.fill" : "nosign")
+                }
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .font(.system(size: 20, weight: .light))
+                    .foregroundStyle(Color.secondaryBlue)
+            }
+            .menuStyle(BorderlessButtonMenuStyle())
+            
+            Spacer(minLength: 0)
+        }
     }
 }

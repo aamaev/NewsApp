@@ -26,7 +26,13 @@ struct MainScreen: View {
                         .font(.system(size: 34, weight: .bold))
                         .foregroundColor(Color.primaryDark)
                     
-                    NewsSegmentedPicker(selection: $selectedTab)
+                    Picker("", selection: $selectedTab) {
+                        ForEach(NewsTab.allCases, id: \.self) { tab in
+                            Text(tab.rawValue)
+                                .tag(tab)
+                        }
+                    }
+                    .pickerStyle(.segmented)
                 }
                 .padding(.horizontal)
 

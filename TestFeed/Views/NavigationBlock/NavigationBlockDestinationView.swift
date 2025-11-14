@@ -32,24 +32,7 @@ struct NavigationBlockDestinationView: View {
             
             Spacer(minLength: 0)
             
-            if let symbol = block.titleSymbol {
-                CircleIconView(systemName: symbol)
-            }
-
-            if block.kind != .push {
-                Text(block.title)
-                    .font(.system(size: 17, weight: .bold))
-                    .foregroundStyle(Color.primaryDark)
-                    .multilineTextAlignment(.center)
-            }
-
-            if let subtitle = block.subtitle, !subtitle.isEmpty {
-                Text(subtitle)
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(Color.secondaryBlue)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-            }
+            blockInfo
             
             Spacer(minLength: 0)
         }
@@ -65,5 +48,27 @@ struct NavigationBlockDestinationView: View {
         }
         .tint(Color.blue)
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    @ViewBuilder
+    var blockInfo: some View {
+        if let symbol = block.titleSymbol {
+            CircleIconView(systemName: symbol)
+        }
+
+        if block.kind != .push {
+            Text(block.title)
+                .font(.system(size: 17, weight: .bold))
+                .foregroundStyle(Color.primaryDark)
+                .multilineTextAlignment(.center)
+        }
+
+        if let subtitle = block.subtitle, !subtitle.isEmpty {
+            Text(subtitle)
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(Color.secondaryBlue)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+        }
     }
 }

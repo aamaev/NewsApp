@@ -17,8 +17,8 @@ struct Article: Codable, Identifiable, Hashable {
     let webUrl: String
     let apiUrl: String
     let isHosted: Bool
-    let pillarId: String
-    let pillarName: String
+    let pillarId: String?
+    let pillarName: String?
     
     var formattedDate: String {
         let isoFormatter = ISO8601DateFormatter()

@@ -23,6 +23,11 @@ class ArticlesListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var inFlightRequest: AnyCancellable?
     
+    func loadInitialIfNeeded() {
+        guard articles.isEmpty else { return }
+        loadInitial()
+    }
+    
     func loadInitial() {
         startInitialLoad(reset: true)
     }
@@ -70,7 +75,6 @@ class ArticlesListViewModel: ObservableObject {
             c.store(in: &cancellables)
         }
     }
-    
     
     func loadMoreIfNeeded(current item: Article?) {
         guard !isLoading else { return }

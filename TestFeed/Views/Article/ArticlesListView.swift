@@ -56,44 +56,49 @@ struct ArticlesListView: View {
                 .padding(.horizontal)
             }
 
-            if viewModel.isLoading && viewModel.articles.isEmpty {
-                ProgressView()
-            } else if viewModel.articles.isEmpty {
-                StatePlaceholderView(
-                    icon: "exclamationmark.triangle.fill",
-                    title: "No Result",
-                    buttonTitle: "Refresh",
-                    onButtonTap: { viewModel.loadInitial() }
-                )
-            } else if filteredArticles.isEmpty && !viewModel.isLoading {
-                switch tab {
-                case .all:
-                    StatePlaceholderView(
-                        icon: "newspaper.fill",
-                        title: "No Results",
-                        buttonTitle: "Refresh",
-                        onButtonTap: { viewModel.loadInitial() }
-                    )
-                case .favorites:
-                    StatePlaceholderView(
-                        icon: "heart",
-                        title: "No Favorite News",
-                    )
-                case .blocked:
-                    StatePlaceholderView(
-                        icon: "nosign",
-                        title: "No Blocked News",
-                    )
-                }
-            }
+            errorStateView(filteredArticles: filteredArticles)
         }
         .refreshable { viewModel.refresh() }
-        .task { viewModel.loadInitial() }
+        .task { viewModel.loadInitialIfNeeded() }
         .background(Color.backgroundLight.ignoresSafeArea())
         .presentBlockRoute($viewModel.route)
         .alert(viewModel.alertTitle, isPresented: $viewModel.showAlert) {
             Button("OK", role: .cancel) {
                 viewModel.showAlert = false
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func errorStateView(filteredArticles: [Article]) -> some View {
+        if viewModel.isLoading && viewModel.articles.isEmpty {
+            ProgressView()
+        } else if viewModel.articles.isEmpty {
+            StatePlaceholderView(
+                icon: "exclamationmark.triangle.fill",
+                title: "No Result",
+                buttonTitle: "Refresh",
+                onButtonTap: { viewModel.loadInitial() }
+            )
+        } else if filteredArticles.isEmpty && !viewModel.isLoading {
+            switch tab {
+            case .all:
+                StatePlaceholderView(
+                    icon: "newspaper.fill",
+                    title: "No Results",
+                    buttonTitle: "Refresh",
+                    onButtonTap: { viewModel.loadInitial() }
+                )
+            case .favorites:
+                StatePlaceholderView(
+                    icon: "heart",
+                    title: "No Favorite News",
+                )
+            case .blocked:
+                StatePlaceholderView(
+                    icon: "nosign",
+                    title: "No Blocked News",
+                )
             }
         }
     }
